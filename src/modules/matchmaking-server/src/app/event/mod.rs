@@ -4,7 +4,6 @@ use json::JsonValue;
 use std::collections::HashMap;
 
 pub mod echo;
-pub mod main_game;
 
 pub type EventMapType = HashMap<String, EventHandlerType>;
 
@@ -20,7 +19,6 @@ pub fn manager(preset: &Option<String>) -> EventMapType {
     return match preset.as_str() {
         "none" => HashMap::new(),
         "echo" => echo::get(),
-        "mainGame" => main_game::get_config(),
         _ => {
             panic!("Invalid preset : {}", preset);
         }

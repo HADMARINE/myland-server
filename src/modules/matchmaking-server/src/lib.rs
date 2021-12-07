@@ -3,7 +3,6 @@ use std::sync::{Arc, RwLock};
 use json::JsonValue;
 use json_parser::parse_js_to_json;
 use neon::{prelude::*, result::Throw};
-
 mod app;
 mod error;
 mod json_parser;

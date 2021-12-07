@@ -5,7 +5,6 @@ use json::JsonValue;
 use crate::{error::predeclared::QuickSocketError, socket_instance::ChannelController};
 
 use super::EventMapType;
-// use crate::socket_instance::ChannelClient;
 
 pub fn get() -> EventMapType {
     let mut map: EventMapType = HashMap::new();
