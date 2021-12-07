@@ -2889,18 +2889,10 @@ clean-stack@^2.0.0:
   resolved "https://registry.yarnpkg.com/clean-stack/-/clean-stack-2.2.0.tgz#ee8472dbb129e727b31e8a10a427dee9dfe4008b"
   integrity sha512-4diC9HaTE+KRAMWhDhrGOECgWZxoevMc5TlkObMqNSsVU62PYzXZ/SMTjzyGAFF1YusgxGcSWTEXBhp0CPwQ1A==
 
-clear-logger@1.0.7:
+clear-logger@1.0.7, clear-logger@^1.0.5:
   version "1.0.7"
   resolved "https://registry.yarnpkg.com/clear-logger/-/clear-logger-1.0.7.tgz#a35421eef3ba9d5b09546f3baf8998f57ec8a304"
   integrity sha512-9hO/COl/IrWPTWt00QabloUjTWzDXQxGZ6x5I4gzj6xLcFUr0KFflr5w/Ixvq9bliSmBH2wV4iWVLNWn8xwr1A==
-  dependencies:
-    chalk "^4.1.0"
-    moment "^2.29.1"
-
-clear-logger@^1.0.5:
-  version "1.0.5"
-  resolved "https://registry.yarnpkg.com/clear-logger/-/clear-logger-1.0.5.tgz#49480456fe477368b87017d3ab98cea1257a9db5"
-  integrity sha512-Vb7FRX7/E0K+CxcQQFUL7GGxyU3arIvceUoGoR8E0MFXy9/7pL+l+tTvvCvRU7uRlAIEOjQE7KcucTAxk2Sgdw==
   dependencies:
     chalk "^4.1.0"
     moment "^2.29.1"
@@ -4014,10 +4006,10 @@ express-ipfilter@^1.2.0:
     proxy-addr "^2.0.4"
     range_check "^1.2.0"
 
-express-quick-builder@^3.0.7:
-  version "3.0.7"
-  resolved "https://registry.yarnpkg.com/express-quick-builder/-/express-quick-builder-3.0.7.tgz#9ca65cc1141a46221d4f6269bca46307ffaefbba"
-  integrity sha512-Y0iRmL2prs/uJ+HUZVoGRhVQkGfqESR9O84PbWK6dwglnG2HXy6vVCPKK36+yLqmrpOjpdsAy3WO54L7zXZnog==
+express-quick-builder@^3.0.11:
+  version "3.0.11"
+  resolved "https://registry.yarnpkg.com/express-quick-builder/-/express-quick-builder-3.0.11.tgz#538b2fb4ff2d20ec66c071a02ead66fb98b18586"
+  integrity sha512-bP/qWsjBNH3gaTJkRQFIoTiDTBVNQivLOf46a0DFmPPJPI1Pk+R7MpT/DGxPST4QQmEW76ePaZV+aR3+omUbYA==
   dependencies:
     chalk "^4.1.1"
     clear-logger "^1.0.5"
