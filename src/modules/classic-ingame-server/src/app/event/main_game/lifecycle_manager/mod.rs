@@ -51,6 +51,10 @@ pub mod turnloop {
 }
 
 pub mod global {
+    use std::sync::Arc;
+
+    use futures::lock::Mutex;
+
     #[derive(Clone, Copy, PartialEq, PartialOrd)]
     pub enum GlobalStatus {
         WaitUser = 0,
@@ -65,13 +69,28 @@ pub mod global {
 
     pub struct GlobalLifecycleManager {
         pub status: GlobalStatus,
+        pub event_handlers: Vec<Arc<Mutex<dyn FnOnce() -> Result<(), Box<dyn std::error::Error>>>>>,
     }
 
     impl GlobalLifecycleManager {
         pub fn new() -> Self {
             GlobalLifecycleManager {
                 status: GlobalStatus::WaitUser,
+                event_handlers: vec![],
             }
+        }
+
+        pub fn set_event_handler(
+            &self,
+            status: GlobalStatus,
+            handler: Box<dyn FnOnce() -> Result<(), Box<dyn std::error::Error>>>,
+        ) {
+            let th_handler = Arc::new(Mutex::from(handler));
+            self.event_handlers.insert(status as usize, th_handler);
+        }
+
+        pub fn startup(&mut self) {
+            // TODO!
         }
 
         pub fn get_current_status(&self) -> GlobalStatus {
@@ -79,7 +98,7 @@ pub mod global {
         }
 
         pub fn promote_status(&self, status: GlobalStatus) -> bool {
-            // No counteracting is allowed
+            // Counteracting is NOT allowed
             let recieved_status_number = status as u8;
             let current_status_number = self.status as u8;
 

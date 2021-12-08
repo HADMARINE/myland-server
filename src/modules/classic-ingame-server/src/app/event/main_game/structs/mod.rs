@@ -1,21 +1,24 @@
 pub mod stats {
+    pub mod lands
     pub struct User {
 
     }
     
     pub struct Immovables {
-        pub building_level: Immovables_building_level,
+        pub building_level: ImmovablesBuildingLevel,
         pub attractiveness: f32,
         pub population_capacity: u32,
         pub productivity: f32,
     }
 
-    pub struct Land {
+    pub struct Land<T> {
         pub tile_count: u32,
-
+        pub location: T
     }
 
-    pub enum Immovables_building_level {
+    
+
+    pub enum ImmovablesBuildingLevel {
         Basic,
         Moderate,
         Advanced,
@@ -39,6 +42,6 @@ pub mod events {
     pub mod cyclic {
 
 
-        pub struct
+        // pub struct 
     }
 }
