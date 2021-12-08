@@ -4,7 +4,7 @@ use super::EventMapType;
 
 pub mod constants;
 pub mod cyclic_event_queue;
-pub mod main_loop;
+pub mod lifecycle_manager;
 pub mod structs;
 pub mod transformers;
 
