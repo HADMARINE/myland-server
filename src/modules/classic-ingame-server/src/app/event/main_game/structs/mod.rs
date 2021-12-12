@@ -31,14 +31,26 @@ pub mod stats {
 
     pub struct SpecialEffect {}
 
-    pub struct Effect {
+    pub enum Component {
+        ValueChange(),
+    }
+
+    pub enum ValueKind {
+        Money,
+        Population,
+        Attractiveness,
+        Productivity,
+        PoliticalPower,
+    }
+
+    pub struct CustomComponent {
         pub name: String,
         pub details: String,
         pub effect_kind: EffectKind,
         pub amount: f32,
     }
 
-    pub enum EffectKind {
+    pub enum EventKind {
         Once,
         Continous,
         Trigger(),
