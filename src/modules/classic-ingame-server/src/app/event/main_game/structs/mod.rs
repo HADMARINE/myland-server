@@ -8,20 +8,43 @@ pub mod stats {
         pub political_power: f32,
         pub secretary: Secretary,
         pub loans: Vec<Loan>,
-        pub effects
+        pub effects: EffectContainer,
     }
 
     impl<T> User<T> {
         pub fn get_total_population(&self) -> u32 {}
     }
 
-    pub struct Secretary {}
+    pub struct Secretary {
+        pub name: String,
+        pub effects: EffectContainer,
+        pub special_effects: SpecialEffect,
+    }
 
-    pub struct Advertisement {}
+    pub struct Advertisement {
+        pub name: String,
+        pub price: u32,
+        pub effect: EffectContainer,
+    }
 
     pub struct EffectContainer {}
 
-    pub struct Effect {}
+    pub struct SpecialEffect {}
+
+    pub struct Effect {
+        pub name: String,
+        pub details: String,
+        pub effect_kind: EffectKind,
+        pub amount: f32,
+    }
+
+    pub enum EffectKind {
+        Once,
+        Continous,
+        Trigger(),
+    }
+
+    pub struct Trigger {}
 
     pub struct Immovables {
         pub building_level: ImmovablesBuildingLevel,
