@@ -1,38 +1,45 @@
 pub mod stats {
     pub struct GlobalGameStat {}
-    // pub mod lands
+    pub mod lands {
+        pub enum Seoul {}
+    }
     pub struct User<LandType> {
         pub lands: Vec<Land<LandType>>,
         pub money: f32,
         pub reputation: f32,
         pub political_power: f32,
-        pub secretary: Secretary,
+        pub secretary: Secretary<LandType>,
         pub loans: Vec<Loan>,
-        pub effects: EffectContainer,
+        pub effects: Vec<Component<LandType>>,
     }
 
     impl<T> User<T> {
         pub fn get_total_population(&self) -> u32 {}
     }
 
-    pub struct Secretary {
+    pub struct Secretary<LandType> {
         pub name: String,
-        pub effects: EffectContainer,
+        pub effects: Vec<Component<LandType>>,
         pub special_effects: SpecialEffect,
     }
 
-    pub struct Advertisement {
+    pub struct Advertisement<LandType> {
         pub name: String,
+        pub description: String,
         pub price: u32,
-        pub effect: EffectContainer,
+        pub effect: Vec<Component<LandType>>,
     }
-
-    pub struct EffectContainer {}
 
     pub struct SpecialEffect {}
 
-    pub enum Component {
-        ValueChange(),
+    pub struct Component<LandType> {
+        pub user: User<LandType>,
+        pub component_kind: ComponentKind,
+    }
+
+    pub enum ComponentKind {
+        ValueChange(ValueKind, f32),
+        Custom(Fn),
     }
 
     pub enum ValueKind {
@@ -52,7 +59,9 @@ pub mod stats {
 
     pub enum EventKind {
         Once,
-        Continous,
+        Repetitive,
+        RepetitiveLimited(u32),
+        TurnReduction(u32),
         Trigger(),
     }
 
@@ -65,6 +74,12 @@ pub mod stats {
         pub productivity: f32,
     }
 
+    pub enum ImmovablesBuildingLevel {
+        Basic,
+        Moderate,
+        Advanced,
+        Landmark,
+    }
     pub struct Land<LandType> {
         pub tile_count: u32,
         pub location: LandType, // Put a enum type here
@@ -72,12 +87,8 @@ pub mod stats {
 
     pub struct Loan {
         pub loan_bank_id: u8, // This is for distinction of ceratin bank
-    }
-    pub enum ImmovablesBuildingLevel {
-        Basic,
-        Moderate,
-        Advanced,
-        Landmark,
+        pub loan_amount: f32,
+        pub interest_rate: f32,
     }
 }
 
