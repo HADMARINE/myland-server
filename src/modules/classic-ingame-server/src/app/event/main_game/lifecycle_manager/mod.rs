@@ -1,19 +1,37 @@
 pub mod turnloop {
     #[derive(PartialEq)]
     pub enum TurnLoopStatus {
-        TurnRunning,
-        EndTurnWait,
-        WaitUntilCue,
+        TurnRunning = 0,
+        EndTurnWait = 1,
+        WaitUntilCue = 2,
+        Terminated = 3,
     }
 
-    struct TurnLoopLifecycleManager {
+    pub struct TurnLoopLifecycleManager {
         pub status: TurnLoopStatus,
+        pub handler: Vec<dyn Fn(&Self) -> Result<(), Box<dyn std::error::Error>>>,
     }
 
     impl TurnLoopLifecycleManager {
         pub fn new() -> Self {
             TurnLoopLifecycleManager {
                 status: TurnLoopStatus::WaitUntilCue,
+                handler: Vec::new(),
+            }
+        }
+
+        pub fn set_event_handler(
+            &self,
+            status: TurnLoopStatus,
+            handler: dyn Fn(&Self) -> Result<(), Box<dyn std::error::Error>>,
+        ) {
+        }
+
+        pub fn kickoff(&self) {
+            while self.status != TurnLoopStatus::Terminated {
+                let hdlr: dyn Fn(&Self) -> Result<(), Box<dyn std::error::Error>> =
+                    self.handler[self.status as usize];
+                hdlr();
             }
         }
 
@@ -89,11 +107,15 @@ pub mod global {
             self.event_handlers.insert(status as usize, th_handler);
         }
 
-        pub fn startup(&mut self) {
+        pub fn kickoff(&mut self) {
             for hdlr in self.event_handlers {
-                match hdlr.lock() {
-                    Ok(v) => v,
-                }
+                let handler: dyn FnOnce() -> Result<(), Box<dyn std::error::Error>> =
+                    match hdlr.lock() {
+                        Ok(v) => v,
+                        Err(_) => panic!("Event stalled into deadlock!"),
+                    };
+
+                handler();
             }
         }
 
