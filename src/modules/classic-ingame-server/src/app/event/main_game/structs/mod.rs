@@ -11,6 +11,7 @@ pub mod stats {
         pub secretary: Secretary<LandType>,
         pub loans: Vec<Loan>,
         pub effects: Vec<Component<LandType>>,
+        pub uuid: String,
     }
 
     impl<T> User<T> {
@@ -33,13 +34,35 @@ pub mod stats {
     pub struct SpecialEffect {}
 
     pub struct Component<LandType> {
-        pub user: User<LandType>,
+        pub affected_subject: AffectedSubject<LandType>,
         pub component_kind: ComponentKind,
+    }
+
+    impl<LandType> Component<LandType> {
+        pub fn resolve(&self) {
+            match self.component_kind {
+                ComponentKind::ValueChange(value_kind, amount) => {}
+                ComponentKind::CustomFunction(func) => {}
+            }
+        }
     }
 
     pub enum ComponentKind {
         ValueChange(ValueKind, f32),
-        Custom(Fn),
+        CustomFunction(Fn() -> ()),
+    }
+
+    pub enum AffectedSubject<LandType> {
+        User(User<LandType>),
+        Land(Land<LandType>),
+    }
+
+    pub enum UnitKind<Type> {
+        Percent(f32),
+        UnsignedDecimal(u32),
+        SignedDecimal(i32),
+        Float(f32),
+        Type(Type),
     }
 
     pub enum ValueKind {
@@ -50,12 +73,12 @@ pub mod stats {
         PoliticalPower,
     }
 
-    pub struct CustomComponent {
-        pub name: String,
-        pub details: String,
-        pub effect_kind: EffectKind,
-        pub amount: f32,
-    }
+    // pub struct CustomComponent {
+    //     pub name: String,
+    //     pub details: String,
+    //     pub effect_kind: EffectKind,
+    //     pub amount: f32,
+    // }
 
     pub enum EventKind {
         Once,
@@ -65,13 +88,12 @@ pub mod stats {
         Trigger(),
     }
 
-    pub struct Trigger {}
-
-    pub struct Immovables {
+    pub struct Immovable {
         pub building_level: ImmovablesBuildingLevel,
         pub attractiveness: f32,
         pub population_capacity: u32,
         pub productivity: f32,
+        pub required_productivity: f32,
     }
 
     pub enum ImmovablesBuildingLevel {
@@ -82,7 +104,23 @@ pub mod stats {
     }
     pub struct Land<LandType> {
         pub tile_count: u32,
+        pub tile_composition: Vec<Immovable>,
         pub location: LandType, // Put a enum type here
+        pub population: u32,
+        pub holding_productivity: u32,
+        pub currently_building_immovables: (Immovable, u32),
+    }
+
+    impl<LandType> Land<LandType> {
+        pub fn allocate_land(&self) {}
+        pub fn proceed_building_process(&self) {}
+        pub fn add_population(&self, population: u32) {}
+        pub fn transform_attractiveness_to_population(&self) {}
+
+        // Value getters
+        pub fn get_population_capacity(&self) {}
+        pub fn get_attractiveness(&self) {}
+        pub fn get_total_productivity(&self) {}
     }
 
     pub struct Loan {
