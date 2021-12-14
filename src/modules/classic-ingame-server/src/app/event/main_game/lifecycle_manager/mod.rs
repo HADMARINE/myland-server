@@ -89,7 +89,13 @@ pub mod global {
             self.event_handlers.insert(status as usize, th_handler);
         }
 
-        pub fn startup(&mut self) {}
+        pub fn startup(&mut self) {
+            for hdlr in self.event_handlers {
+                match hdlr.lock() {
+                    Ok(v) => v,
+                }
+            }
+        }
 
         pub fn get_current_status(&self) -> GlobalStatus {
             self.status
