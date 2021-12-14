@@ -83,7 +83,7 @@ pub mod global {
         pub fn set_event_handler(
             &self,
             status: GlobalStatus,
-            handler: Box<dyn FnOnce() -> Result<(), Box<dyn std::error::Error>>>,
+            handler: Box<dyn FnOnce(&Self) -> Result<(), Box<dyn std::error::Error>>>,
         ) {
             let th_handler = Arc::new(Mutex::from(handler));
             self.event_handlers.insert(status as usize, th_handler);

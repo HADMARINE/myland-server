@@ -1,6 +1,8 @@
 use json::JsonValue;
 use std::collections::HashMap;
 
+use super::event::game_manager::waiting_users;
+
 pub type BridgeMapType = HashMap<String, BridgeHandlerType>;
 
 pub type BridgeHandlerType = Box<dyn Fn(JsonValue) -> Result<(), Box<dyn std::error::Error>>>;
@@ -37,4 +39,18 @@ pub fn resolver(event: String, data: JsonValue) -> Result<(), String> {
 fn print(value: JsonValue) -> Result<(), Box<dyn std::error::Error>> {
     println!("value: {}", value.to_string());
     Ok(())
+}
+
+fn receive_user_data(value: JsonValue) -> Result<(), Box<dyn std::error::Error>> {
+    let value_map = HashMap::new();
+    for (k, v) in value.entries() {
+        value_map.insert(k.to_string(), v);
+    }
+
+    let ids: Vec<String> = match value_map.get("data".to_string()) {
+        Ok(v) => v,
+        Err(e) => return e,
+    };
+
+    waiting_users = ids;
 }

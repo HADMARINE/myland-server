@@ -10,12 +10,25 @@ pub mod stats {
         pub political_power: f32,
         pub secretary: Secretary<LandType>,
         pub loans: Vec<Loan>,
-        pub effects: Vec<Component<LandType>>,
+        pub componenets: Vec<Component<LandType>>,
         pub uuid: String,
     }
 
     impl<T> User<T> {
+        // Getter functions
         pub fn get_total_population(&self) -> u32 {}
+        pub fn get_total_productivity(&self) -> u32 {}
+        pub fn get_total_attractiveness(&self) -> f32 {}
+
+        // Action
+        pub fn allocate_land(&self) {
+            // Check the occupation of land via cycling each user
+        }
+
+        pub fn transfer_land(&self) {
+            // Check that user of self has the ownership of certain land
+            // and transfer to certain user
+        }
     }
 
     pub struct Secretary<LandType> {
@@ -28,7 +41,7 @@ pub mod stats {
         pub name: String,
         pub description: String,
         pub price: u32,
-        pub effect: Vec<Component<LandType>>,
+        pub component: Vec<Component<LandType>>,
     }
 
     pub struct SpecialEffect {}
@@ -48,8 +61,8 @@ pub mod stats {
     }
 
     pub enum ComponentKind {
-        ValueChange(ValueKind, f32),
-        CustomFunction(Fn() -> ()),
+        ValueChange(ValueKind, UnitKind),
+        CustomFunction(dyn Fn() -> ()),
     }
 
     pub enum AffectedSubject<LandType> {
@@ -57,12 +70,11 @@ pub mod stats {
         Land(Land<LandType>),
     }
 
-    pub enum UnitKind<Type> {
+    pub enum UnitKind {
         Percent(f32),
         UnsignedDecimal(u32),
         SignedDecimal(i32),
         Float(f32),
-        Type(Type),
     }
 
     pub enum ValueKind {
@@ -73,19 +85,12 @@ pub mod stats {
         PoliticalPower,
     }
 
-    // pub struct CustomComponent {
-    //     pub name: String,
-    //     pub details: String,
-    //     pub effect_kind: EffectKind,
-    //     pub amount: f32,
-    // }
-
     pub enum EventKind {
         Once,
         Repetitive,
         RepetitiveLimited(u32),
         TurnReduction(u32),
-        Trigger(),
+        Trigger(dyn Fn() -> ()),
     }
 
     pub struct Immovable {
@@ -127,15 +132,6 @@ pub mod stats {
         pub loan_bank_id: u8, // This is for distinction of ceratin bank
         pub loan_amount: f32,
         pub interest_rate: f32,
-    }
-}
-
-pub mod status {
-    pub struct Territory {
-        pub tile_count: u32,
-        pub attractiveness: f32,
-        pub productivity: f32,
-        pub population: u32,
     }
 }
 

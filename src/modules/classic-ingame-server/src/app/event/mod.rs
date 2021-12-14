@@ -4,6 +4,7 @@ use json::JsonValue;
 use std::collections::HashMap;
 
 pub mod echo;
+pub mod game_manager;
 pub mod main_game;
 
 pub type EventMapType = HashMap<String, EventHandlerType>;
