@@ -1,8 +1,14 @@
 use std::time::Instant;
 
-use crate::app::event::main_game::{lifecycle_manager::turnloop::{
-    TurnLoopLifecycleManager, TurnLoopStatus,
-}, constants::TIME_PER_TURN_SEC};
+use crate::app::event::main_game::{
+    constants::TIME_PER_TURN_SEC,
+    cyclic_event_queue::CyclicEventManager,
+    lifecycle_manager::turnloop::{TurnLoopLifecycleManager, TurnLoopStatus},
+};
+
+lazy_static::lazy_static! {
+    pub static ref CEM :CyclicEventManager = CyclicEventManager::new();
+}
 
 pub fn main_loop() {
     let tlm = TurnLoopLifecycleManager::new();
@@ -18,11 +24,14 @@ fn turn_running(tlm: &TurnLoopLifecycleManager) {
         let start_time = Instant::now();
         while start_time.elapsed().as_secs() < TIME_PER_TURN_SEC {}
         tlm.end_turn();
-    }
+    };
 }
 
 fn end_turn_wait(tlm: &TurnLoopLifecycleManager) {
     tlm.new_turn();
 }
 
-fn wait_until_cue(tlm: &TurnLoopLifecycleManager) {}
+fn wait_until_cue(tlm: &TurnLoopLifecycleManager) {
+    CEM.consume_events_all();
+    tlm.start_turn();
+}

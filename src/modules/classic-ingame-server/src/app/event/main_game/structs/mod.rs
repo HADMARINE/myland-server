@@ -60,6 +60,10 @@ pub mod stats {
         }
     }
 
+    pub trait Event {
+        fn resolve(&self) -> Result<(), Box<dyn std::error::Error>>;
+    }
+
     pub enum ComponentKind {
         ValueChange(ValueKind, UnitKind),
         CustomFunction(dyn Fn() -> ()),
@@ -83,9 +87,10 @@ pub mod stats {
         Attractiveness,
         Productivity,
         PoliticalPower,
+        Reputation,
     }
 
-    pub enum EventKind {
+    pub enum CyclicEventKind {
         Once,
         Repetitive,
         RepetitiveLimited(u32),
@@ -138,20 +143,30 @@ pub mod stats {
 pub mod events {
     pub mod cyclic {
         pub mod util {
-            pub struct TurnReduction {} // Wrap any events that should be resolved in certain turn
+            pub struct TurnReduction {
+                pub remain_time: u8,
+                pub event: 
+            } // Wrap any events that should be resolved in certain turn
 
             pub struct Repetitive {} // Wrap any events that should be repetitive
         }
 
-        use crate::app::event::main_game::{cyclic_event_queue::CyclicEvent, structs::stats::User};
+        use crate::app::event::main_game::{
+            cyclic_event_queue::{CyclicEvent, CyclicIntegratedEvent},
+            structs::stats::{Event, User},
+        };
 
         pub struct PersonalEvent<LandType> {
             pub user: User<LandType>,
         }
 
-        impl PersonalEvent {}
+        impl<LandType> PersonalEvent<LandType> {
+            pub fn new(user: &User<LandType>) -> Vec<PersonalEvent<LandType>> {
+                let events: Vec<dyn Event> = Vec::new();
+            }
+        }
 
-        impl CyclicEvent for PersonalEvent {}
+        impl CyclicIntegratedEvent for PersonalEvent {}
 
         pub struct GlobalEvent {
             // pub
@@ -175,13 +190,22 @@ pub mod events {
 
         pub struct PopulationTransformation {}
 
-        pub struct SpyRecruit {}
+        pub struct SpyRecruit<LandType> {
+            pub user: User<LandType>,
+            pub archived_reputation: f32,
+        }
 
-        pub struct SpyActivity {}
+        pub struct SpyActivity<LandType> {
+            pub event: dyn Event,
+        }
 
         pub struct WinLoseDetermination {}
 
+        impl CyclicIntegratedEvent for WinLoseDetermination {}
+
         pub struct Construction {}
+
+        impl CyclicIntegratedEvent for Construction {}
 
         pub struct Reclamation {}
 

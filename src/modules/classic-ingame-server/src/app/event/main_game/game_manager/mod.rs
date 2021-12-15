@@ -1,6 +1,6 @@
 use super::structs::stats::{lands::Seoul, User};
 
-pub static waiting_users: Vec<String> = Vec::new();
-pub static registered_users: Vec<User<Seoul>> = Vec::new();
-pub static ready_count: u8 = 0;
-// pub static client_ready_list: Vec<User
+pub static WAITING_USERS: Vec<String> = Vec::new();
+pub static REGISTERED_USERS: Vec<User<Seoul>> = Vec::new();
+pub static READY_COUNT: u8 = 0;
+pub static CLIENT_READY_LIST: Vec<User<Seoul>> = Vec::new();

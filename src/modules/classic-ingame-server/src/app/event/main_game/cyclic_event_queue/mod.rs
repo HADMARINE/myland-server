@@ -4,15 +4,25 @@ use std::{
     thread::{self, JoinHandle},
 };
 
+use super::structs::stats::Event;
+
 pub trait CyclicEvent {
-    fn resolve(&self) -> Result<(), Box<dyn std::error::Error>>;
     fn get_priority(&self) -> u32;
 }
+
+pub trait CyclicIntegratedEvent: CyclicEvent + Event {}
+
 pub struct CyclicEventManager {
-    event_queue: VecDeque<Box<dyn CyclicEvent + Send + Sync>>,
+    event_queue: VecDeque<Box<dyn CyclicIntegratedEvent + Send + Sync>>,
 }
 
 impl CyclicEventManager {
+    pub fn new() -> Self {
+        Self {
+            event_queue: VecDeque::new(),
+        }
+    }
+
     pub fn enqueue(
         &self,
         event: Box<dyn CyclicEvent + Send + Sync>,

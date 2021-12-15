@@ -1,7 +1,7 @@
 use json::JsonValue;
 use std::collections::HashMap;
 
-use super::event::game_manager::waiting_users;
+use super::event::main_game::game_manager::WAITING_USERS;
 
 pub type BridgeMapType = HashMap<String, BridgeHandlerType>;
 
@@ -52,5 +52,5 @@ fn receive_user_data(value: JsonValue) -> Result<(), Box<dyn std::error::Error>>
         Err(e) => return e,
     };
 
-    waiting_users = ids;
+    WAITING_USERS = ids;
 }

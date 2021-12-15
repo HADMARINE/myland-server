@@ -41,7 +41,7 @@ pub fn start_game() {
 
 fn on_wait_user(glm: &GlobalLifecycleManager) {
     let start_time = Instant::now();
-    while game_manager::waiting_users.len() == 0 {
+    while game_manager::WAITING_USERS.len() == 0 {
         let elapsed = start_time.elapsed().as_secs();
         if elapsed > USER_CONNECT_WAIT_TIME_SEC {
             break;
@@ -51,7 +51,7 @@ fn on_wait_user(glm: &GlobalLifecycleManager) {
 }
 
 fn on_wait_user_ready(glm: &GlobalLifecycleManager) {
-    while game_manager::registered_users.len() == game_manager::ready_count {}
+    while game_manager::REGISTERED_USERS.len() == game_manager::READY_COUNT {}
     glm.promote_status(GlobalStatus::InitialServerLoading);
 }
 
