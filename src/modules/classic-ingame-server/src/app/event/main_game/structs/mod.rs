@@ -66,7 +66,7 @@ pub mod stats {
 
     pub enum ComponentKind {
         ValueChange(ValueKind, UnitKind),
-        CustomFunction(dyn Fn() -> ()),
+        CustomFunction(Box<dyn Fn() -> ()>),
     }
 
     pub enum AffectedSubject<LandType> {
@@ -139,16 +139,16 @@ pub mod events {
 
             pub struct TurnReduction {
                 pub remain_time: u8,
-                pub event: dyn Event,
+                pub event: Box<dyn Event>,
             } // Wrap any events that should be resolved in certain turn
 
             pub struct Repetitive {
-                pub event: dyn Event,
+                pub event: Box<dyn Event>,
             } // Wrap any events that should be repetitive
         }
 
         use crate::app::event::main_game::{
-            cyclic_event_queue::{CyclicEvent, CyclicIntegratedEvent},
+            cyclic_event_queue::CyclicIntegratedEvent,
             structs::stats::{Event, Land, Loan, User},
         };
 
@@ -158,7 +158,7 @@ pub mod events {
 
         impl<LandType> PersonalEvent<LandType> {
             pub fn new(user: &User<LandType>) -> Vec<PersonalEvent<LandType>> {
-                let events: Vec<dyn Event> = Vec::new();
+                let events: Vec<Box<dyn Event>> = Vec::new();
             }
         }
 
@@ -204,7 +204,7 @@ pub mod events {
         }
 
         pub struct SpyActivity<LandType> {
-            pub event: dyn Event,
+            pub event: Box<dyn Event>,
             pub origin_user: User<LandType>,
             pub dest_user: User<LandType>,
             pub dest_land: Land<LandType>,

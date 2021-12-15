@@ -18,6 +18,23 @@ pub mod transformers;
 
 pub fn get_config() -> EventMapType {
     let mut map: EventMapType = HashMap::new();
+    map.insert("user_ready".to_string());
+    map.insert("client_ready".to_string());
+
+    map.insert("register".to_string());
+    map.insert("relogin".to_string());
+
+    map.insert("start_auction".to_string());
+    map.insert("register_auction".to_string());
+
+    map.insert("get_lobby_list".to_string());
+
+    map.insert("get_loan_list".to_string());
+    map.insert("select_loan".to_string());
+
+    map.insert("recruit_spy".to_string());
+    map.insert("select_spy".to_string());
+    map.insert("select_spy".to_string());
 
     map
 }
@@ -68,12 +85,15 @@ fn on_game_running(glm: &GlobalLifecycleManager) {
     main_loop();
     glm.promote_status(GlobalStatus::GameEndProcess);
 }
+
 fn on_game_end_process(glm: &GlobalLifecycleManager) {
     glm.promote_status(GlobalStatus::WaitEndProcess);
 }
+
 fn on_wait_end_process(glm: &GlobalLifecycleManager) {
     glm.promote_status(GlobalStatus::RoomTerminated);
 }
+
 fn on_room_terminated(glm: &GlobalLifecycleManager) {
     // Exit this gracefully
     exit(0);
