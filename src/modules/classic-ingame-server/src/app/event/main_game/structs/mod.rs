@@ -203,9 +203,14 @@ pub mod events {
             pub archived_reputation: f32,
         }
 
-        pub struct SpyActivity {
+        pub struct SpyActivity<LandType> {
             pub event: dyn Event,
+            pub origin_user: User<LandType>,
+            pub dest_user: User<LandType>,
+            pub dest_land: Land<LandType>,
         }
+
+        impl<LandType> CyclicIntegratedEvent for SpyActivity<LandType> {}
 
         pub struct WinLoseDetermination {}
 
@@ -223,10 +228,14 @@ pub mod events {
             pub tile_index: u8,
         }
 
+        impl<LandType> CyclicIntegratedEvent for Reclamation<LandType> {}
+
         pub struct Auction<LandType> {
             pub participate_status: Vec<(User<LandType>, f32)>,
             pub land: Land<LandType>,
         }
+
+        impl<LandType> CyclicIntegratedEvent for Auction<LandType> {}
 
         // 기부 잠금 - user state 로 관리, 변경하는걸 이벤트
         // pub struct

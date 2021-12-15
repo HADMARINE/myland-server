@@ -2,6 +2,7 @@ use std::{collections::HashMap, process::exit, time::Instant};
 
 use self::{
     constants::USER_CONNECT_WAIT_TIME_SEC,
+    implementations::main_loop::main_loop,
     lifecycle_manager::global::{GlobalLifecycleManager, GlobalStatus},
 };
 
@@ -64,6 +65,7 @@ fn on_initial_client_loading_wait(glm: &GlobalLifecycleManager) {
 }
 
 fn on_game_running(glm: &GlobalLifecycleManager) {
+    main_loop();
     glm.promote_status(GlobalStatus::GameEndProcess);
 }
 fn on_game_end_process(glm: &GlobalLifecycleManager) {
