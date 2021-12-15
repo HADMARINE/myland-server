@@ -8,6 +8,14 @@ use super::structs::stats::Event;
 
 pub trait CyclicEvent {
     fn get_priority(&self) -> u32;
+    fn get_cyclic_event_kind(&self) -> CyclicEventKind;
+}
+pub enum CyclicEventKind {
+    Once,
+    Repetitive,
+    RepetitiveLimited(u32),
+    TurnReduction(u32),
+    Trigger(dyn Fn() -> ()),
 }
 
 pub trait CyclicIntegratedEvent: CyclicEvent + Event {}

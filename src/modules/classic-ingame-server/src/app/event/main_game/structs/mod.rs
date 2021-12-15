@@ -90,14 +90,6 @@ pub mod stats {
         Reputation,
     }
 
-    pub enum CyclicEventKind {
-        Once,
-        Repetitive,
-        RepetitiveLimited(u32),
-        TurnReduction(u32),
-        Trigger(dyn Fn() -> ()),
-    }
-
     pub struct Immovable {
         pub building_level: ImmovablesBuildingLevel,
         pub attractiveness: f32,
@@ -143,17 +135,21 @@ pub mod stats {
 pub mod events {
     pub mod cyclic {
         pub mod util {
+            use crate::app::event::main_game::structs::stats::Event;
+
             pub struct TurnReduction {
                 pub remain_time: u8,
-                pub event: 
+                pub event: dyn Event,
             } // Wrap any events that should be resolved in certain turn
 
-            pub struct Repetitive {} // Wrap any events that should be repetitive
+            pub struct Repetitive {
+                pub event: dyn Event,
+            } // Wrap any events that should be repetitive
         }
 
         use crate::app::event::main_game::{
             cyclic_event_queue::{CyclicEvent, CyclicIntegratedEvent},
-            structs::stats::{Event, User},
+            structs::stats::{Event, Land, Loan, User},
         };
 
         pub struct PersonalEvent<LandType> {
@@ -166,7 +162,7 @@ pub mod events {
             }
         }
 
-        impl CyclicIntegratedEvent for PersonalEvent {}
+        impl<LandType> CyclicIntegratedEvent for PersonalEvent<LandType> {}
 
         pub struct GlobalEvent {
             // pub
@@ -176,26 +172,38 @@ pub mod events {
             pub user: User<LandType>,
         }
 
-        impl Income {}
+        impl<LandType> CyclicIntegratedEvent for Income<LandType> {}
 
-        impl CyclicEvent for Income {}
+        pub struct Tax<LandType> {
+            pub user: User<LandType>,
+        }
 
-        pub struct Tax {}
+        impl<LandType> CyclicIntegratedEvent for Tax<LandType> {}
 
-        impl CyclicEvent for Tax {}
+        pub struct LoanInterest<LandType> {
+            pub user: User<LandType>,
+            pub loan: Loan,
+        }
 
-        pub struct LoanInterest {}
+        impl<LandType> CyclicIntegratedEvent for LoanInterest<LandType> {}
 
-        pub struct LoanPayment {}
+        pub struct LoanPayment<LandType> {
+            pub user: User<LandType>,
+            pub loan: Loan,
+        }
 
-        pub struct PopulationTransformation {}
+        impl<LandType> CyclicIntegratedEvent for LoanPayment<LandType> {}
+
+        pub struct PopulationTransformation<LandType> {
+            pub land: Land<LandType>,
+        }
 
         pub struct SpyRecruit<LandType> {
             pub user: User<LandType>,
             pub archived_reputation: f32,
         }
 
-        pub struct SpyActivity<LandType> {
+        pub struct SpyActivity {
             pub event: dyn Event,
         }
 
@@ -203,13 +211,22 @@ pub mod events {
 
         impl CyclicIntegratedEvent for WinLoseDetermination {}
 
-        pub struct Construction {}
+        pub struct Construction<LandType> {
+            pub land: Land<LandType>,
+            pub tile_index: u8,
+        }
 
-        impl CyclicIntegratedEvent for Construction {}
+        impl<LandType> CyclicIntegratedEvent for Construction<LandType> {}
 
-        pub struct Reclamation {}
+        pub struct Reclamation<LandType> {
+            pub land: Land<LandType>,
+            pub tile_index: u8,
+        }
 
-        pub struct Auction {}
+        pub struct Auction<LandType> {
+            pub participate_status: Vec<(User<LandType>, f32)>,
+            pub land: Land<LandType>,
+        }
 
         // 기부 잠금 - user state 로 관리, 변경하는걸 이벤트
         // pub struct
