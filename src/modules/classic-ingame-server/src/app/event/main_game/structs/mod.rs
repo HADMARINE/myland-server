@@ -10,11 +10,25 @@ pub mod stats {
         pub political_power: f32,
         pub secretary: Secretary<LandType>,
         pub loans: Vec<Loan>,
-        pub componenets: Vec<Component<LandType>>,
+        pub components: Vec<Component<LandType>>,
         pub uuid: String,
     }
 
     impl<T> User<T> {
+        // Nouvellize
+        pub fn new(uuid: String) -> Self {
+            User {
+                lands: Vec::new(),
+                money: 0,
+                reputation: 0,
+                political_power: 0,
+                secretary: Secretary::new_undef(),
+                loans: Vec::new(),
+                components: Vec::new(),
+                uuid,
+            }
+        }
+
         // Getter functions
         pub fn get_total_population(&self) -> u32 {}
         pub fn get_total_productivity(&self) -> u32 {}
@@ -34,7 +48,17 @@ pub mod stats {
     pub struct Secretary<LandType> {
         pub name: String,
         pub effects: Vec<Component<LandType>>,
-        pub special_effects: SpecialEffect,
+        pub special_effects: Vec<SpecialEffect>,
+    }
+
+    impl<LandType> Secretary<LandType> {
+        pub fn new_undef() -> Self {
+            Self {
+                name: String::from("undefined"),
+                effects: Vec::new(),
+                special_effects: Vec::new(),
+            }
+        }
     }
 
     pub struct Advertisement<LandType> {
@@ -138,7 +162,7 @@ pub mod events {
             use crate::app::event::main_game::structs::stats::Event;
 
             pub struct TurnReduction {
-                pub remain_time: u8,
+                pub remain_turn: u8,
                 pub event: Box<dyn Event>,
             } // Wrap any events that should be resolved in certain turn
 

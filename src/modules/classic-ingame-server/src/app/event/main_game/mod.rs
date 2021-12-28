@@ -20,14 +20,27 @@ pub mod transformers;
 // Event Handlers
 pub fn get_config() -> EventMapType {
     let mut map: EventMapType = HashMap::new();
-    map.insert("user_ready".to_string());
-    map.insert("client_ready".to_string());
 
+    // Master lifecycle
+    map.insert("user_ready".to_string());
+    map.insert("client_load_ready".to_string());
+
+    // Authentication
     map.insert("register".to_string());
     map.insert("relogin".to_string());
 
-    map.insert("start_auction".to_string());
-    map.insert("register_auction".to_string());
+    // Lands
+
+    map.insert("start_land_auction".to_string());
+    map.insert("register_land_auction".to_string());
+    map.insert("liberate_land".to_string());
+    map.insert("transact_land".to_string());
+
+    // Immovables
+
+    map.insert("construct_immovable".to_string());
+    map.insert("deconstrcut_immovable".to_string());
+    map.insert("upgrade_immovable".to_string());
 
     map.insert("get_lobby_list".to_string());
     map.insert("select_lobby".to_string());
@@ -37,12 +50,18 @@ pub fn get_config() -> EventMapType {
 
     map.insert("recruit_spy".to_string());
     map.insert("select_spy".to_string());
+    map.insert("activate_spy".to_string());
 
     map.insert("queue_construction".to_string());
     map.insert("queue_reclamation".to_string());
 
+    map.insert("get_advertisement_list".to_string());
+    map.insert("select_advertisement".to_string());
+
+    // Value getters
+    map.insert("get_land_standard_price".to_string());
     map.insert("".to_string());
-    map.insert("queue_reclamation".to_string());
+    map.insert("".to_string());
 
     map
 }
