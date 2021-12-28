@@ -1,22 +1,17 @@
+mod r#impl;
+
 use json::JsonValue;
 use std::collections::HashMap;
 
-use super::event::main_game::game_manager::WAITING_USERS;
+use self::r#impl::{receive_user_data, resolve_js_handler_resolution_keys};
 
-mod r#impl;
+use super::event::main_game::game_manager::WAITING_USERS;
 
 pub type BridgeMapType = HashMap<String, BridgeHandlerType>;
 
 pub type BridgeHandlerType = Box<dyn Fn(JsonValue) -> Result<(), Box<dyn std::error::Error>>>;
 
 pub fn manager() -> BridgeMapType {
-    // return match preset.as_str() {
-    //     "none" => HashMap::new(),
-    //     "echo" => echo::get(),
-    //     _ => {
-    //         panic!("Invalid preset : {}", preset);
-    //     }
-    // };
     let mut map: BridgeMapType = HashMap::new(); // TODO : Complete this
 
     map.insert(String::from("print"), Box::new(print));
@@ -24,6 +19,7 @@ pub fn manager() -> BridgeMapType {
         String::from("resolve_js_handler_resolution_keys"),
         resolve_js_handler_resolution_keys,
     );
+    map.insert(String::from("receive_user_data"), receive_user_data);
     map
 }
 
