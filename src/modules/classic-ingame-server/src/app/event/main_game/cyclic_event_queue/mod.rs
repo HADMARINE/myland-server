@@ -15,7 +15,7 @@ pub enum CyclicEventKind {
     Repetitive,
     RepetitiveLimited(u32),
     TurnReduction(u32),
-    Trigger(dyn Fn() -> ()),
+    Trigger(dyn Fn() -> ()), // TODO : Fix this error
 }
 
 pub trait CyclicIntegratedEvent: CyclicEvent + Event {}
